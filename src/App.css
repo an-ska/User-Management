@@ -1,15 +1,15 @@
 :root {
-  --accentColor: green;
+  --accentColor: #30A262;
 }
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: "";
+  font-family: "Lato", sans-serif;
 }
 
 body {
-  background: #EFEFEF;
+  background: #FEFEFE;
   padding: 10px;
 }
