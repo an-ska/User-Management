@@ -1,5 +1,5 @@
 :root {
-  --accentColor: #30A262;
+  --accentColor: #77C39F;
 }
 
 * {
@@ -10,6 +10,6 @@
 }
 
 body {
-  background: #FEFEFE;
+  background: #F9FBFA;
   padding: 10px;
 }

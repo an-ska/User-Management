@@ -1,0 +1,19 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.logo {
+  max-width: 140px;
+}
+
+.link {
+  color: var(--accentColor);
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.link:hover {
+  text-decoration: underline;
+}

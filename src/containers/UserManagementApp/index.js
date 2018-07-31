@@ -1,10 +1,13 @@
 import React, { Component } from "react";
 import styles from "./UserManagementApp.module.css";
+import Header from "../../components/Header";
 
 class UserManagementApp extends Component {
   render() {
     return (
-      <p className={styles.test}>TEST</p>
+      <div className={styles.container}>
+        <Header />
+      </div>
     )
   }
 }
