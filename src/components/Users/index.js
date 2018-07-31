@@ -55,9 +55,9 @@ class Users extends Component {
       <div className={styles.contentBox}>
         <ul className={styles.users}>
           <li className={styles.user}>
-            <span className={styles.id}>lp</span>
-            <span className={styles.name}>user</span>
-            <span className={styles.email}>e-mail</span>
+            <strong className={styles.id}>lp</strong>
+            <strong className={styles.name}>user</strong>
+            <strong className={styles.email}>e-mail</strong>
           </li>
           {
             users.map((user) => (
