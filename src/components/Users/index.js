@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import styles from "./Users.module.css";
 import User from "../User";
+import AddUserForm from "../AddUserForm";
 
 const apiUrl = "https://jsonplaceholder.typicode.com/users";
 
@@ -9,6 +10,7 @@ class Users extends Component {
     super(props);
     this.state = {
       users: [],
+      firstAvailableId: "",
       hasError: false,
       isLoading: false
     }
@@ -24,17 +26,15 @@ class Users extends Component {
 
     fetch(apiUrl)
       .then(response => response.json())
-      .then(users => users.map((user) => {
-          this.setState({
-            users: [
-              ...this.state.users,
-              {
-                id: user.id,
-                name: user.name,
-                email: user.email
-              }
-            ]
-          })
+      .then(users => users.map((user) => (
+        {
+          id: user.id,
+          name: user.name,
+          email: user.email
+        }
+      )))
+      .then(users => this.setState({
+        users,
       }))
       .catch(() => {
         this.setState({
@@ -48,11 +48,45 @@ class Users extends Component {
       })
   }
 
+  addUser = (inputName) => {
+    this.setState({
+      firstAvailableId: this.state.users[this.state.users.length-1].id
+    }, () => {
+      fetch(apiUrl, {
+        method: 'POST',
+        body: JSON.stringify({
+          id: this.state.firstAvailableId+1,
+          name: inputName,
+          email: "inputEmail"
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
+      })
+      .then(response => response.json())
+      .then(newUser =>
+        this.setState({
+          users: [
+            ...this.state.users,
+            {
+              id: newUser.id,
+              name: newUser.name,
+              email: newUser.email,
+            }
+          ]
+        })
+      )
+    })
+  }
+
   render() {
     const { users } = this.state;
 
     return (
       <div className={styles.contentBox}>
+        <AddUserForm
+          addUser={this.addUser}
+        />
         <ul className={styles.users}>
           <li className={styles.user}>
             <strong className={styles.id}>lp</strong>
