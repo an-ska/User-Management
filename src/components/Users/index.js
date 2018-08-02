@@ -48,7 +48,7 @@ class Users extends Component {
       })
   }
 
-  addUser = (inputName) => {
+  addUser = (inputName, inputEmail) => {
     this.setState({
       firstAvailableId: this.state.users[this.state.users.length-1].id
     }, () => {
@@ -57,7 +57,7 @@ class Users extends Component {
         body: JSON.stringify({
           id: this.state.firstAvailableId+1,
           name: inputName,
-          email: "inputEmail"
+          email: inputEmail
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8"
@@ -86,6 +86,8 @@ class Users extends Component {
       <div className={styles.contentBox}>
         <AddUserForm
           addUser={this.addUser}
+          inputNameId="inputName"
+          inputEmailId="inputEmail"
         />
         <ul className={styles.users}>
           <li className={styles.user}>

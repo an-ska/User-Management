@@ -6,59 +6,76 @@ class AddUserForm extends Component {
     super(props);
     this.state = ({
       inputName: "",
-      inputEmail: ""
+      inputEmail: "",
+      inputHasError: false
     })
   }
 
   handleInputChange = e => {
     this.setState({
-      inputName: e.target.value
+      [`${e.target.id}`]: e.target.value
     });
   }
 
   handleClick = e => {
-    if (this.state.inputName.length > 0) {
-      this.props.addUser(this.state.inputName)
+    const {inputName, inputEmail} = this.state;
+
+    if (this.invalidInputValues(inputName, inputEmail)) {
+      return;
+    } else {
+      this.props.addUser(inputName, inputEmail)
     }
 
     this.setState({
-      inputName: ""
+      inputName: "",
+      inputEmail: ""
     })
   }
 
   handleKeyPress = e => {
-    if (e.key !== "Enter" || this.state.inputName === 0) {
+    const {inputName, inputEmail} = this.state;
+    if (e.key !== "Enter") {
       return;
     }
+    this.handleClick();
+  }
 
-    this.setState({
-      inputName: e.target.value
-    });
-
-    this.props.addUser(this.state.inputName);
-
-    this.setState({
-      inputName: ""
-    })
-    e.preventDefault();
+  invalidInputValues = (inputName, inputEmail) => {
+    if ((inputName.match(/^[a-zA-Z]+(\s{1}[a-zA-Z]+)*$/) && inputName.length <= 20) && inputEmail.match((/^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i))) {
+      this.setState({
+        inputHasError: false
+      })
+      return false;
+    } else {
+      this.setState({
+        inputHasError: true
+      })
+      return true;
+    }
   }
 
   render() {
     const { inputName, inputEmail } = this.state;
-    const { handleClick } = this.props;
+    const { handleClick, inputNameId, inputEmailId } = this.props;
 
     return (
       <form>
         <input
+          id={inputNameId}
           type="text"
           value={inputName}
           placeholder="Name..."
           onChange={this.handleInputChange}
-          onKeyPress={this.handleKeyPress}></input>
+          onKeyPress={this.handleKeyPress}
+        />
         <input
+          id={inputEmailId}
           type="text"
           value={inputEmail}
-          placeholder="E-mail..."></input>
+          placeholder="E-mail..."
+          onChange={this.handleInputChange}
+          onKeyPress={this.handleKeyPress}
+        />
         <button
           type="button"
           onClick={this.handleClick}
