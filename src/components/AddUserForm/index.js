@@ -1,5 +1,6 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import styles from "./AddUserForm.module.css";
+import MessageToUser from "../MessageToUser";
 
 class AddUserForm extends Component {
   constructor(props) {
@@ -55,32 +56,42 @@ class AddUserForm extends Component {
   }
 
   render() {
-    const { inputName, inputEmail } = this.state;
+    const { inputName, inputEmail, inputHasError } = this.state;
     const { handleClick, inputNameId, inputEmailId } = this.props;
 
     return (
-      <form>
-        <input
-          id={inputNameId}
-          type="text"
-          value={inputName}
-          placeholder="Name..."
-          onChange={this.handleInputChange}
-          onKeyPress={this.handleKeyPress}
-        />
-        <input
-          id={inputEmailId}
-          type="text"
-          value={inputEmail}
-          placeholder="E-mail..."
-          onChange={this.handleInputChange}
-          onKeyPress={this.handleKeyPress}
-        />
-        <button
-          type="button"
-          onClick={this.handleClick}
-          >Submit</button>
-      </form>
+      <Fragment>
+        <form>
+          <input
+            id={inputNameId}
+            type="text"
+            value={inputName}
+            placeholder="Name..."
+            onChange={this.handleInputChange}
+            onKeyPress={this.handleKeyPress}
+          />
+          <input
+            id={inputEmailId}
+            type="text"
+            value={inputEmail}
+            placeholder="E-mail..."
+            onChange={this.handleInputChange}
+            onKeyPress={this.handleKeyPress}
+          />
+          <button
+            type="button"
+            onClick={this.handleClick}
+            >Submit</button>
+        </form>
+        {
+          inputHasError &&
+          <MessageToUser
+            text="Please fill in all the fields and make sure they are correct"
+            icon="fas fa-exclamation-circle"
+          />
+        }
+      </Fragment>
+
     )
   }
 }
