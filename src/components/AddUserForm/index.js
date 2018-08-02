@@ -61,9 +61,10 @@ class AddUserForm extends Component {
 
     return (
       <Fragment>
-        <form>
+        <form className={styles.form}>
           <input
             id={inputNameId}
+            className={styles.input}
             type="text"
             value={inputName}
             placeholder="Name..."
@@ -73,6 +74,7 @@ class AddUserForm extends Component {
           />
           <input
             id={inputEmailId}
+            className={styles.input}
             type="text"
             value={inputEmail}
             placeholder="E-mail..."
@@ -80,6 +82,7 @@ class AddUserForm extends Component {
             onKeyPress={this.handleKeyPress}
           />
           <button
+            className={styles.button}
             type="button"
             onClick={this.handleClick}
             >Submit</button>

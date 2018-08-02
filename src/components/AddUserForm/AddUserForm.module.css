@@ -1,0 +1,43 @@
+.form {
+  width: 75%;
+  display: flex;
+  justify-content: space-around;
+  padding: 20px;
+}
+
+.input, .button {
+  font-size: 14px;
+  background: #FFF;
+  border: 1px solid #CCC;
+  border-radius: 3px;
+}
+
+.input:focus, .button:focus {
+  outline: var(--accentColor) auto 3px;
+}
+
+.input {
+  flex: 1;
+  margin-right: 10px;
+  padding: 10px;
+  color: #222;
+}
+
+.button {
+  padding: 10px 50px;
+  color: #FFF;
+  background: var(--accentColor);
+  cursor: pointer;
+  border-radius: 3px;
+  border: none;
+}
+
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button {
+  visibility: hidden;
+  display: none !important;
+  pointer-events: none;
+  height: 0;
+  width: 0;
+  margin: 0;
+}
