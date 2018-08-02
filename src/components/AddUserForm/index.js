@@ -69,6 +69,7 @@ class AddUserForm extends Component {
             placeholder="Name..."
             onChange={this.handleInputChange}
             onKeyPress={this.handleKeyPress}
+            autoFocus
           />
           <input
             id={inputEmailId}

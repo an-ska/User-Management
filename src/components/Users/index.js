@@ -76,6 +76,36 @@ class Users extends Component {
           ]
         })
       )
+      .catch(() => {
+        this.setState({
+          hasError: true
+        })
+      })
+      .finally(() => {
+        this.setState({
+          isLoading: false
+        })
+      })
+    })
+  }
+
+  removeUser = (userId) => {
+    const updatedUserList = this.state.users.filter(user => user.id !== userId)
+
+    fetch(apiUrl + "/" + userId, {
+      method: "DELETE"
+    })
+    .then((response) => {
+      if(response.status === 200) {
+        this.setState({
+          users: updatedUserList
+        })
+      }
+    })
+    .catch(() => {
+      this.setState({
+        hasError: true
+      })
     })
   }
 
@@ -102,6 +132,7 @@ class Users extends Component {
                 userId={user.id}
                 userName={user.name}
                 userEmail={user.email}
+                handleClick={() => this.removeUser(user.id)}
              />
             ))
           }

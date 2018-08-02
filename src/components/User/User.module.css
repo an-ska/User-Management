@@ -18,6 +18,10 @@
   margin: 0 20px 0 10px;
 }
 
+.removeIcon {
+  cursor: pointer;
+}
+
 @media (max-width: 650px) {
   .user {
     flex-direction: column;
