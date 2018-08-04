@@ -29,6 +29,11 @@
   margin: 0 20px 0 10px;
 }
 
+.formHeader {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 650px) {
   .user {
     display: none;

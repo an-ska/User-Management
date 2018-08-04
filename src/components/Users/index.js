@@ -143,36 +143,41 @@ class Users extends Component {
 
     return (
       <div className={styles.contentBox}>
-        {
-          isSuccessMessageShown
-          &&
-          <MessageToUser
-            text="You have successfully added a new user."
-            icon={"fas fa-check-circle fa-lg success"}
-           />
-        }
-        {
-          isFormShown
-          ?
-            <AddUserForm
-              addUser={this.addUser}
-              inputNameId="inputName"
-              inputEmailId="inputEmail"
-            />
-          :
-            users.length >= maximalUsersNumber
-            ?
-              <MessageToUser
-                text="You can't add new user because of a limit."
-                icon={"fas fa-info-circle fa-lg error"}
-              />
-            :
+        <header className={styles.formHeader}>
+          {
+            !isFormShown && users.length < maximalUsersNumber
+            &&
               <Button
                 handleClick={() => this.showForm()}
                 text="Add user"
                 icon={"fas fa-plus-circle fa-lg"}
               />
-        }
+          }
+          {
+            isSuccessMessageShown
+            &&
+              <MessageToUser
+                text="You have successfully added a new user."
+                icon={"fas fa-check-circle fa-lg success"}
+               />
+          }
+          {
+            isFormShown
+            ?
+              <AddUserForm
+                addUser={this.addUser}
+                inputNameId="inputName"
+                inputEmailId="inputEmail"
+              />
+            :
+              users.length >= maximalUsersNumber
+              &&
+                <MessageToUser
+                  text="You can't add new user because of a limit."
+                  icon={"fas fa-info-circle fa-lg error"}
+                />
+          }
+        </header>
         <ul className={styles.users}>
           <li className={styles.user}>
             <strong
