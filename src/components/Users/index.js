@@ -12,7 +12,8 @@ class Users extends Component {
       users: [],
       firstAvailableId: "",
       hasError: false,
-      isLoading: false
+      isLoading: false,
+      ascendingSort: true
     }
   }
   componentDidMount() {
@@ -109,6 +110,17 @@ class Users extends Component {
     })
   }
 
+  sortBy = (key) => {
+    this.setState({
+      users: this.state.users.sort((a, b) => (
+        this.state.ascendingSort
+        ? a[key] > b[key]
+        : a[key] < b[key]
+      )),
+      ascendingSort: !this.state.ascendingSort
+    })
+  }
+
   render() {
     const { users } = this.state;
 
@@ -121,9 +133,15 @@ class Users extends Component {
         />
         <ul className={styles.users}>
           <li className={styles.user}>
-            <strong className={styles.id}>lp</strong>
-            <strong className={styles.name}>user</strong>
-            <strong className={styles.email}>e-mail</strong>
+            <strong
+              className={styles.id}
+              onClick={() => this.sortBy("id")}>lp</strong>
+            <strong
+              className={styles.name}
+              onClick={() => this.sortBy("name")}>user</strong>
+            <strong
+              className={styles.email}
+              onClick={() => this.sortBy("email")}>e-mail</strong>
           </li>
           {
             users.map((user) => (

@@ -41,3 +41,9 @@ input::-webkit-credentials-auto-fill-button {
   width: 0;
   margin: 0;
 }
+
+@media (max-width: 650px) {
+  .form {
+    flex-direction: column;
+  }
+}
