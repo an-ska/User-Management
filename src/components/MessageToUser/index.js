@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import styles from "./MessageToUser.module.css";
 
 const MessageToUser = ({ text, icon }) => (
-  <div>
-    <i className={icon}></i>
-    <p>{text}</p>
+  <div className={styles.message}>
+    <i className={`${icon} ${styles.icon}`}></i>
+    <strong>{text}</strong>
   </div>
 )
 

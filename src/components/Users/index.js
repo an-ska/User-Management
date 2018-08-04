@@ -2,8 +2,11 @@ import React, { Component } from "react";
 import styles from "./Users.module.css";
 import User from "../User";
 import AddUserForm from "../AddUserForm";
+import MessageToUser from "../MessageToUser";
+import Button from "../Button";
 
 const apiUrl = "https://jsonplaceholder.typicode.com/users";
+const maximalUsersNumber = 10;
 
 class Users extends Component {
   constructor(props) {
@@ -13,7 +16,9 @@ class Users extends Component {
       firstAvailableId: 11,
       hasError: false,
       isLoading: false,
-      ascendingSort: true
+      ascendingSort: true,
+      isFormShown: false,
+      isSuccessMessageShown: false,
     }
   }
   componentDidMount() {
@@ -22,7 +27,7 @@ class Users extends Component {
 
   getUsers = (apiUrl) => {
     this.setState({
-      isLoading: true
+      isLoading: true,
     })
 
     fetch(apiUrl)
@@ -31,7 +36,7 @@ class Users extends Component {
         {
           id: user.id,
           name: user.name,
-          email: user.email
+          email: user.email,
         }
       )))
       .then(users => this.setState({
@@ -39,12 +44,12 @@ class Users extends Component {
       }))
       .catch(() => {
         this.setState({
-          hasError: true
+          hasError: true,
         })
       })
       .finally(() => {
         this.setState({
-          isLoading: false
+          isLoading: false,
         })
       })
   }
@@ -72,17 +77,19 @@ class Users extends Component {
             email: newUser.email,
           }
         ],
-        firstAvailableId: this.state.firstAvailableId + 1
+        firstAvailableId: this.state.firstAvailableId + 1,
+        isSuccessMessageShown: true,
       })
     )
     .catch(() => {
       this.setState({
-        hasError: true
+        hasError: true,
       })
     })
     .finally(() => {
       this.setState({
-        isLoading: false
+        isLoading: false,
+        isFormShown: false,
       })
     })
   }
@@ -106,7 +113,8 @@ class Users extends Component {
       })
     })
     this.setState({
-      users: updatedUserList
+      users: updatedUserList,
+      isSuccessMessageShown: false
     })
   }
 
@@ -123,16 +131,48 @@ class Users extends Component {
     })
   }
 
+  showForm = () => {
+    this.setState({
+      isFormShown: true,
+      isSuccessMessageShown: false
+    })
+  }
+
   render() {
-    const { users } = this.state;
+    const { users, isFormShown, isSuccessMessageShown } = this.state;
 
     return (
       <div className={styles.contentBox}>
-        <AddUserForm
-          addUser={this.addUser}
-          inputNameId="inputName"
-          inputEmailId="inputEmail"
-        />
+        {
+          isSuccessMessageShown
+          &&
+          <MessageToUser
+            text="You have successfully added a new user."
+            icon={"fas fa-check-circle fa-lg success"}
+           />
+        }
+        {
+          isFormShown
+          ?
+            <AddUserForm
+              addUser={this.addUser}
+              inputNameId="inputName"
+              inputEmailId="inputEmail"
+            />
+          :
+            users.length >= maximalUsersNumber
+            ?
+              <MessageToUser
+                text="You can't add new user because of a limit."
+                icon={"fas fa-info-circle fa-lg error"}
+              />
+            :
+              <Button
+                handleClick={() => this.showForm()}
+                text="Add user"
+                icon={"fas fa-plus-circle fa-lg"}
+              />
+        }
         <ul className={styles.users}>
           <li className={styles.user}>
             <strong
@@ -145,6 +185,14 @@ class Users extends Component {
               className={styles.email}
               onClick={() => this.sortBy("email")}>e-mail</strong>
           </li>
+          {
+            users.length === 0
+            &&
+            <MessageToUser
+              text="No users to show."
+              icon={"fas fa-info-circle fa-lg information"}
+            />
+          }
           {
             users.map((user) => (
               <User

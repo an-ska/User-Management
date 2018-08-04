@@ -1,0 +1,10 @@
+.message {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  font-size: 16px;
+}
+
+.icon {
+  padding-right: 5px;
+}
