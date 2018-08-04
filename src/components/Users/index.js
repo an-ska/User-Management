@@ -10,7 +10,7 @@ class Users extends Component {
     super(props);
     this.state = {
       users: [],
-      firstAvailableId: "",
+      firstAvailableId: 11,
       hasError: false,
       isLoading: false,
       ascendingSort: true
@@ -50,42 +50,39 @@ class Users extends Component {
   }
 
   addUser = (inputName, inputEmail) => {
-    this.setState({
-      firstAvailableId: this.state.users[this.state.users.length-1].id
-    }, () => {
-      fetch(apiUrl, {
-        method: 'POST',
-        body: JSON.stringify({
-          id: this.state.firstAvailableId+1,
-          name: inputName,
-          email: inputEmail
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
+    fetch(apiUrl, {
+      method: 'POST',
+      body: JSON.stringify({
+        id: this.state.firstAvailableId,
+        name: inputName,
+        email: inputEmail
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    .then(response => response.json())
+    .then(newUser =>
+      this.setState({
+        users: [
+          ...this.state.users,
+          {
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+          }
+        ],
+        firstAvailableId: this.state.firstAvailableId + 1
       })
-      .then(response => response.json())
-      .then(newUser =>
-        this.setState({
-          users: [
-            ...this.state.users,
-            {
-              id: newUser.id,
-              name: newUser.name,
-              email: newUser.email,
-            }
-          ]
-        })
-      )
-      .catch(() => {
-        this.setState({
-          hasError: true
-        })
+    )
+    .catch(() => {
+      this.setState({
+        hasError: true
       })
-      .finally(() => {
-        this.setState({
-          isLoading: false
-        })
+    })
+    .finally(() => {
+      this.setState({
+        isLoading: false
       })
     })
   }
@@ -107,6 +104,9 @@ class Users extends Component {
       this.setState({
         hasError: true
       })
+    })
+    this.setState({
+      users: updatedUserList
     })
   }
 
