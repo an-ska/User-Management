@@ -114,8 +114,10 @@ class Users extends Component {
     this.setState({
       users: this.state.users.sort((a, b) => (
         this.state.ascendingSort
-        ? a[key] > b[key]
-        : a[key] < b[key]
+        ?
+          (a[key]).toString().localeCompare(b[key], undefined, {numeric: true})
+        :
+          (b[key]).toString().localeCompare(a[key], undefined, {numeric: true})
       )),
       ascendingSort: !this.state.ascendingSort
     })
