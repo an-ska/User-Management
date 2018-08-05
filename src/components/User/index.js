@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 import styles from "./User.module.css";
 
 const User = ({userId, userName, userEmail, handleClick}) => (
