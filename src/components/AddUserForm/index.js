@@ -22,36 +22,38 @@ class AddUserForm extends Component {
   handleClick = e => {
     const {inputName, inputEmail} = this.state;
 
-    if (this.hasInvalidInputValues(inputName, inputEmail)) {
-      return;
-    } else {
-      this.props.addUser(inputName, inputEmail)
-    }
+    if ((this.isNameValid(inputName) && this.isEmailValid(inputEmail))) {
+      this.setState({
+        inputHasError: false
+      })
 
-    this.clearInputValues()
+      this.props.addUser(inputName, inputEmail);
+      this.clearInputValues();
+    }
+    else
+    {
+      this.setState({
+        inputHasError: true
+      })
+    }
   }
+
+  isNameValid = inputName => {
+    const maximalNameSignsNumber = 20;
+
+    return (inputName.match(/^[a-zA-Z]+(\s{1}[a-zA-Z]+)*$/)
+    && inputName.length <= maximalNameSignsNumber)
+  }
+
+  isEmailValid = inputEmail => (
+    inputEmail.match((/^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i))
+  )
 
   handleKeyPress = e => {
     if (e.key !== "Enter") {
       return;
     }
     this.handleClick();
-  }
-
-  hasInvalidInputValues = (inputName, inputEmail) => {
-    const maximalNameSignsNumber = 20;
-
-    if ((inputName.match(/^[a-zA-Z]+(\s{1}[a-zA-Z]+)*$/) && inputName.length <= maximalNameSignsNumber) && inputEmail.match((/^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i))) {
-      this.setState({
-        inputHasError: false
-      })
-      return false;
-    } else {
-      this.setState({
-        inputHasError: true
-      })
-      return true;
-    }
   }
 
   clearInputValues = () => {

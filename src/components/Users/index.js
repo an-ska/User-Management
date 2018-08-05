@@ -20,9 +20,9 @@ class Users extends Component {
       hasError: false,
       isLoadingInitialUsers: true,
       isLoadingNewUser: false,
-      ascendingSort: true,
+      isAscendingSort: true,
       isFormShown: false,
-      isSuccessMessageShown: false,
+      isSuccessMessageShown: false
     }
   }
 
@@ -30,8 +30,18 @@ class Users extends Component {
     this.getUsers(apiUrl);
   }
 
+  handleErrors = (response) => {
+    if (!response.ok) {
+      this.setState({
+        hasError: true
+      })
+    }
+    return response;
+  }
+
   getUsers = (apiUrl) => {
     fetch(apiUrl)
+      .then(response => this.handleErrors(response))
       .then(response => response.json())
       .then(users => users.map((user) => (
         {
@@ -43,25 +53,30 @@ class Users extends Component {
       .then(users => this.setState({
         users,
       }))
-      .catch(() => {
+      .catch((e) => {
         this.setState({
-          hasError: true,
+          hasError: true
         })
       })
       .finally(() => {
         this.setState({
-          isLoadingInitialUsers: false,
+          isLoadingInitialUsers: false
         })
       })
   }
 
   addUser = (inputName, inputEmail) => {
-    if (this.checkIfEmailAlreadyExists(inputEmail)) {
+    if (this.emailAlreadyExists(inputEmail)) {
+      this.setState({
+        doesEmailAlreadyExist: true,
+        alreadyExistingEmail: inputEmail
+      })
+
       return;
     };
 
     this.setState({
-      isLoadingNewUser: true,
+      isLoadingNewUser: true
     })
 
     fetch(apiUrl, {
@@ -75,6 +90,7 @@ class Users extends Component {
         "Content-type": "application/json; charset=UTF-8"
       }
     })
+    .then(response => this.handleErrors(response))
     .then(response => response.json())
     .then(newUser =>
       this.setState({
@@ -88,68 +104,64 @@ class Users extends Component {
         ],
         firstAvailableId: this.state.firstAvailableId + 1,
         doesEmailAlreadyExist: false,
-        isSuccessMessageShown: true,
+        isSuccessMessageShown: true
       })
     )
-    .catch(() => {
+    .catch((e) => {
       this.setState({
-        hasError: true,
+        hasError: true
       })
     })
     .finally(() => {
       this.setState({
         isLoadingNewUser: false,
-        isFormShown: false,
+        isFormShown: false
       })
     })
   }
 
-  checkIfEmailAlreadyExists = (inputEmail) => {
-    const doesEmailAlreadyExist = this.state.users.find(user => user.email === inputEmail);
-
-    if (doesEmailAlreadyExist !== undefined){
-      this.setState({
-        doesEmailAlreadyExist: true,
-        alreadyExistingEmail: inputEmail,
-      })
-      return true;
-    }
+  emailAlreadyExists = (inputEmail) => {
+    return this.state.users.find(
+      user => user.email.toLowerCase() === inputEmail.toLowerCase()
+    ) !== undefined;
   }
 
   removeUser = (userId) => {
-    const updatedUserList = this.state.users.filter(user => user.id !== userId)
+    const updatedUsers = this.state.users.filter(user => user.id !== userId)
 
     fetch(apiUrl + "/" + userId, {
       method: "DELETE"
     })
+    /* For non-faked API call, response status code should be checked to update
+     the user list only if the API call succeeded. In this task when adding
+     new users they are not actually added in the backend, therefore this call
+     would return for them 404 status code. That is why the following check is
+     commented out but should be present in the production.
+    */
+    //.then(response => this.handleErrors(response))
     .then((response) => {
-      if(response.status === 200) {
-        this.setState({
-          users: updatedUserList
-        })
-      }
+      this.setState({
+        users: updatedUsers,
+        isSuccessMessageShown: false
+      })
     })
-    .catch(() => {
+    .catch((e) => {
       this.setState({
         hasError: true
       })
-    })
-    this.setState({
-      users: updatedUserList,
-      isSuccessMessageShown: false
     })
   }
 
   sortBy = (key) => {
     this.setState({
       users: this.state.users.sort((a, b) => (
-        this.state.ascendingSort
+        this.state.isAscendingSort
         ?
           (a[key]).toString().localeCompare(b[key], undefined, {numeric: true})
         :
           (b[key]).toString().localeCompare(a[key], undefined, {numeric: true})
       )),
-      ascendingSort: !this.state.ascendingSort
+      isAscendingSort: !this.state.isAscendingSort
     })
   }
 
@@ -161,10 +173,17 @@ class Users extends Component {
   }
 
   render() {
-    const { users, isLoadingInitialUsers, isLoadingNewUser, isFormShown, doesEmailAlreadyExist, alreadyExistingEmail, isSuccessMessageShown } = this.state;
+    const { users, isLoadingInitialUsers, isLoadingNewUser, hasError, isFormShown, doesEmailAlreadyExist, alreadyExistingEmail, isSuccessMessageShown } = this.state;
 
     return (
       <Fragment>
+        {
+          hasError &&
+            <MessageToUser
+              text="Something went wrong."
+              icon={"fas fa-exclamation-circle fa-lg error"}
+            />
+        }
         {
           isLoadingInitialUsers
           ?
