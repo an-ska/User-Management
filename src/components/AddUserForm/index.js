@@ -27,14 +27,12 @@ class AddUserForm extends Component {
       this.props.addUser(inputName, inputEmail)
     }
 
-    this.setState({
-      inputName: "",
-      inputEmail: ""
-    })
+    this.clearInputValues()
   }
 
   handleKeyPress = e => {
     const {inputName, inputEmail} = this.state;
+
     if (e.key !== "Enter") {
       return;
     }
@@ -55,9 +53,17 @@ class AddUserForm extends Component {
     }
   }
 
+  clearInputValues = () => {
+    this.setState({
+      inputName: "",
+      inputEmail: "",
+    })
+  }
+
   render() {
     const { inputName, inputEmail, inputHasError } = this.state;
     const { handleClick, inputNameId, inputEmailId } = this.props;
+    console.log(inputName.length)
 
     return (
       <Fragment>
@@ -87,6 +93,13 @@ class AddUserForm extends Component {
             onClick={this.handleClick}
             >Submit</button>
         </form>
+        {
+          (inputName.length > 0 || inputEmail.length > 0) &&
+            <div
+              className={styles.resetFields}
+              onClick={this.clearInputValues}
+              >Reset Fields</div>
+        }
         {
           inputHasError &&
             <MessageToUser

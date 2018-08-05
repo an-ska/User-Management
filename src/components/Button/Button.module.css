@@ -8,6 +8,12 @@
   font-weight: bold;
   cursor: pointer;
   border: none;
+  transition: all .2s;
+}
+
+.button:hover {
+  background: var(--accentColorHover);
+  transform: scale(1.05);
 }
 
 .button:disabled {
@@ -15,6 +21,10 @@
   border: 1px solid var(--accentColor);
   background: #FFF;
   cursor: not-allowed;
+}
+
+.button:disabled:hover {
+  background: #EEE;
 }
 
 .icon {

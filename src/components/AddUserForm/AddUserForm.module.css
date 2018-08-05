@@ -5,14 +5,16 @@
   padding: 20px;
 }
 
-.input, .button {
+.input,
+.button {
   font-size: 14px;
   background: #FFF;
   border: 1px solid #CCC;
   border-radius: 3px;
 }
 
-.input:focus, .button:focus {
+.input:focus,
+.button:focus {
   outline: var(--accentColor) auto 3px;
 }
 
@@ -31,6 +33,26 @@
   border-radius: 3px;
   border: none;
   font-size: 16px;
+  transition: all .2s;
+}
+
+.button:hover {
+  background: var(--accentColorHover);
+  transform: scale(1.05);
+}
+
+.resetFields {
+  display: flex;
+  align-self: center;
+  padding: 20px;
+  cursor: pointer;
+  color: red;
+  text-decoration: underline;
+  transition: all .2s;
+}
+
+.resetFields:hover {
+  color: #D80000;
 }
 
 input::-webkit-contacts-auto-fill-button,
