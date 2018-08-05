@@ -20,7 +20,7 @@ body {
 }
 
 .error {
-  color: red;
+  color: #FF0000;
 }
 
 .success {
