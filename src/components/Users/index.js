@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import styles from "./Users.module.css";
 import User from "../User";
 import AddUserForm from "../AddUserForm";
@@ -13,6 +13,8 @@ class Users extends Component {
     super(props);
     this.state = {
       users: [],
+      doesEmailAlreadyExist: false,
+      alreadyExistingEmail: "",
       firstAvailableId: 11,
       hasError: false,
       isLoading: false,
@@ -56,6 +58,10 @@ class Users extends Component {
   }
 
   addUser = (inputName, inputEmail) => {
+    if (this.checkIfEmailAlreadyExists(inputEmail)) {
+      return;
+    };
+
     fetch(apiUrl, {
       method: 'POST',
       body: JSON.stringify({
@@ -79,6 +85,7 @@ class Users extends Component {
           }
         ],
         firstAvailableId: this.state.firstAvailableId + 1,
+        doesEmailAlreadyExist: false,
         isSuccessMessageShown: true,
       })
     )
@@ -93,6 +100,18 @@ class Users extends Component {
         isFormShown: false,
       })
     })
+  }
+
+  checkIfEmailAlreadyExists = (inputEmail) => {
+    const doesEmailAlreadyExist = this.state.users.find(user => user.email === inputEmail);
+
+    if (doesEmailAlreadyExist !== undefined){
+      this.setState({
+        doesEmailAlreadyExist: true,
+        alreadyExistingEmail: inputEmail,
+      })
+      return true;
+    }
   }
 
   removeUser = (userId) => {
@@ -140,7 +159,7 @@ class Users extends Component {
   }
 
   render() {
-    const { users, isFormShown, isSuccessMessageShown } = this.state;
+    const { users, isFormShown, doesEmailAlreadyExist, alreadyExistingEmail, isSuccessMessageShown } = this.state;
 
     return (
       <div className={styles.contentBox}>
@@ -173,6 +192,13 @@ class Users extends Component {
               <MessageToUser
                 text="You can't add new user because of a limit."
                 icon={"fas fa-info-circle fa-lg error"}
+              />
+          }
+          {
+            doesEmailAlreadyExist &&
+              <MessageToUser
+                text={`${"E-mail: "}` + alreadyExistingEmail + `${" already exists."}`}
+                icon={"fas fa-exclamation-circle fa-lg error"}
               />
           }
         </header>

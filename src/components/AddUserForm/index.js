@@ -21,7 +21,7 @@ class AddUserForm extends Component {
   handleClick = e => {
     const {inputName, inputEmail} = this.state;
 
-    if (this.invalidInputValues(inputName, inputEmail)) {
+    if (this.hasInvalidInputValues(inputName, inputEmail)) {
       return;
     } else {
       this.props.addUser(inputName, inputEmail)
@@ -31,16 +31,16 @@ class AddUserForm extends Component {
   }
 
   handleKeyPress = e => {
-    const {inputName, inputEmail} = this.state;
-
     if (e.key !== "Enter") {
       return;
     }
     this.handleClick();
   }
 
-  invalidInputValues = (inputName, inputEmail) => {
-    if ((inputName.match(/^[a-zA-Z]+(\s{1}[a-zA-Z]+)*$/) && inputName.length <= 20) && inputEmail.match((/^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i))) {
+  hasInvalidInputValues = (inputName, inputEmail) => {
+    const maximalNameSignsNumber = 20;
+
+    if ((inputName.match(/^[a-zA-Z]+(\s{1}[a-zA-Z]+)*$/) && inputName.length <= maximalNameSignsNumber) && inputEmail.match((/^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i))) {
       this.setState({
         inputHasError: false
       })
@@ -62,8 +62,7 @@ class AddUserForm extends Component {
 
   render() {
     const { inputName, inputEmail, inputHasError } = this.state;
-    const { handleClick, inputNameId, inputEmailId } = this.props;
-    console.log(inputName.length)
+    const { inputNameId, inputEmailId } = this.props;
 
     return (
       <Fragment>
