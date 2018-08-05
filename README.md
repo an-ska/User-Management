@@ -1,8 +1,14 @@
-:construction:
+# User Management Application
 
 To open this project please run:
 
-### Using npm:
-
 - npm install
 - npm start
+
+Used:
+
+- React.js
+- CSS Modules
+- CSS variables
+- Flexbox
+- https://jsonplaceholder.typicode.com/
