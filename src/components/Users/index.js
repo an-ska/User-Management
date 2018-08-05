@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import styles from "./Users.module.css";
 import User from "../User";
 import AddUserForm from "../AddUserForm";
 import MessageToUser from "../MessageToUser";
 import Button from "../Button";
+import loader from "../../images/loader_accent_color.png";
 
 const apiUrl = "https://jsonplaceholder.typicode.com/users";
 const maximalUsersNumber = 10;
@@ -17,7 +18,8 @@ class Users extends Component {
       alreadyExistingEmail: "",
       firstAvailableId: 11,
       hasError: false,
-      isLoading: false,
+      isLoadingInitialUsers: true,
+      isLoadingNewUser: false,
       ascendingSort: true,
       isFormShown: false,
       isSuccessMessageShown: false,
@@ -29,10 +31,6 @@ class Users extends Component {
   }
 
   getUsers = (apiUrl) => {
-    this.setState({
-      isLoading: true,
-    })
-
     fetch(apiUrl)
       .then(response => response.json())
       .then(users => users.map((user) => (
@@ -52,7 +50,7 @@ class Users extends Component {
       })
       .finally(() => {
         this.setState({
-          isLoading: false,
+          isLoadingInitialUsers: false,
         })
       })
   }
@@ -61,6 +59,10 @@ class Users extends Component {
     if (this.checkIfEmailAlreadyExists(inputEmail)) {
       return;
     };
+
+    this.setState({
+      isLoadingNewUser: true,
+    })
 
     fetch(apiUrl, {
       method: 'POST',
@@ -96,7 +98,7 @@ class Users extends Component {
     })
     .finally(() => {
       this.setState({
-        isLoading: false,
+        isLoadingNewUser: false,
         isFormShown: false,
       })
     })
@@ -159,81 +161,91 @@ class Users extends Component {
   }
 
   render() {
-    const { users, isFormShown, doesEmailAlreadyExist, alreadyExistingEmail, isSuccessMessageShown } = this.state;
+    const { users, isLoadingInitialUsers, isLoadingNewUser, isFormShown, doesEmailAlreadyExist, alreadyExistingEmail, isSuccessMessageShown } = this.state;
 
     return (
-      <div className={styles.contentBox}>
-        <header className={styles.formHeader}>
-          {
-            !isFormShown
-              ?
-                <Button
-                  handleClick={() => this.showForm()}
-                  text="Add user"
-                  icon={"fas fa-plus-circle fa-lg"}
-                  disable={users.length < maximalUsersNumber ? false : true}
-                />
-              :
-                <AddUserForm
-                  addUser={this.addUser}
-                  inputNameId="inputName"
-                  inputEmailId="inputEmail"
-                />
-          }
-          {
-            isSuccessMessageShown &&
-              <MessageToUser
-                text="You have successfully added a new user."
-                icon={"fas fa-check-circle fa-lg success"}
-              />
-          }
-          {
-            !isFormShown && users.length >= maximalUsersNumber &&
-              <MessageToUser
-                text="You can't add new user because of a limit."
-                icon={"fas fa-info-circle fa-lg error"}
-              />
-          }
-          {
-            doesEmailAlreadyExist &&
-              <MessageToUser
-                text={`${"E-mail: "}` + alreadyExistingEmail + `${" already exists."}`}
-                icon={"fas fa-exclamation-circle fa-lg error"}
-              />
-          }
-        </header>
-        <ul className={styles.users}>
-          <li className={styles.user}>
-            <strong
-              className={styles.id}
-              onClick={() => this.sortBy("id")}>lp</strong>
-            <strong
-              className={styles.name}
-              onClick={() => this.sortBy("name")}>user</strong>
-            <strong
-              className={styles.email}
-              onClick={() => this.sortBy("email")}>e-mail</strong>
-          </li>
-          {
-            users.length === 0 &&
-              <MessageToUser
-                text="No users to show."
-                icon={"fas fa-info-circle fa-lg information"}
-              />
-          }
-          {
-            users.map((user) => (
-              <User
-                key={user.id}
-                userId={user.id}
-                userName={user.name}
-                userEmail={user.email}
-                handleClick={() => this.removeUser(user.id)}
-             />
-            ))
-          }
-        </ul>
-      </div>
+      <Fragment>
+        {
+          isLoadingInitialUsers
+          ?
+            <img alt="" src={loader} className={styles.loader}/>
+          :
+            <div className={styles.contentBox}>
+              <header className={styles.formHeader}>
+                {
+                  !isFormShown
+                    ?
+                      <Button
+                        handleClick={() => this.showForm()}
+                        text="Add user"
+                        icon={"fas fa-plus-circle fa-lg"}
+                        disable={users.length < maximalUsersNumber ? false : true}
+                      />
+                    :
+                      <AddUserForm
+                        addUser={this.addUser}
+                        inputNameId="inputName"
+                        inputEmailId="inputEmail"
+                        text="Submit"
+                        isLoadingNewUser={isLoadingNewUser}
+                      />
+                }
+                {
+                  isSuccessMessageShown &&
+                    <MessageToUser
+                      text="You have successfully added a new user."
+                      icon={"fas fa-check-circle fa-lg success"}
+                    />
+                }
+                {
+                  !isFormShown && users.length >= maximalUsersNumber &&
+                    <MessageToUser
+                      text="You can't add new user because of a limit."
+                      icon={"fas fa-info-circle fa-lg error"}
+                    />
+                }
+                {
+                  doesEmailAlreadyExist &&
+                    <MessageToUser
+                      text={`${"E-mail: "}` + alreadyExistingEmail + `${" already exists."}`}
+                      icon={"fas fa-exclamation-circle fa-lg error"}
+                    />
+                }
+              </header>
+              <ul className={styles.users}>
+                <li className={styles.user}>
+                  <strong
+                    className={styles.id}
+                    onClick={() => this.sortBy("id")}>lp</strong>
+                  <strong
+                    className={styles.name}
+                    onClick={() => this.sortBy("name")}>user</strong>
+                  <strong
+                    className={styles.email}
+                    onClick={() => this.sortBy("email")}>e-mail</strong>
+                </li>
+                {
+                  users.length === 0 &&
+                    <MessageToUser
+                      text="No users to show."
+                      icon={"fas fa-info-circle fa-lg information"}
+                    />
+                }
+                {
+                  users.map((user) => (
+                    <User
+                      key={user.id}
+                      userId={user.id}
+                      userName={user.name}
+                      userEmail={user.email}
+                      handleClick={() => this.removeUser(user.id)}
+                   />
+                  ))
+                }
+              </ul>
+            </div>
+        }
+      </Fragment>
     )
   }
 }

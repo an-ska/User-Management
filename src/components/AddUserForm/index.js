@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import styles from "./AddUserForm.module.css";
 import MessageToUser from "../MessageToUser";
+import loader from "../../images/loader_accent_background.png";
 
 class AddUserForm extends Component {
   constructor(props) {
@@ -62,7 +63,7 @@ class AddUserForm extends Component {
 
   render() {
     const { inputName, inputEmail, inputHasError } = this.state;
-    const { inputNameId, inputEmailId } = this.props;
+    const { inputNameId, inputEmailId, text, isLoadingNewUser } = this.props;
 
     return (
       <Fragment>
@@ -90,7 +91,15 @@ class AddUserForm extends Component {
             className={styles.button}
             type="button"
             onClick={this.handleClick}
-            >Submit</button>
+            >
+              {
+                isLoadingNewUser
+                ?
+                  <img alt="" src={loader} />
+                :
+                 text
+              }
+            </button>
         </form>
         {
           (inputName.length > 0 || inputEmail.length > 0) &&
