@@ -34,10 +34,11 @@
 }
 
 .removeIcon {
-  cursor: pointer;
-  transition: color .2s;
   color: #AAA;
+  transition: color .2s;
+  cursor: pointer;
 }
+
 .removeIcon:hover {
   color: #000;
 }
@@ -47,8 +48,14 @@
     flex-direction: column;
   }
 
-  .fas {
+  .removeIcon {
     display: flex;
+    align-self: flex-end;
+    order: 1
+  }
+
+  .id {
+    margin-bottom: 10px;
     order: 2;
   }
 

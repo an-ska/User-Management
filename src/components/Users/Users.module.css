@@ -14,12 +14,12 @@
   text-transform: uppercase;
   padding: 15px 25px;
   background: #EEE;
-  cursor: pointer;
 }
 
 .id {
   display: flex;
   flex: 1;
+  cursor: pointer;
 }
 
 .name,
@@ -27,6 +27,7 @@
   display: flex;
   flex: 3;
   margin: 0 20px 0 10px;
+  cursor: pointer;
 }
 
 .formHeader {
@@ -42,6 +43,19 @@
 
 @media (max-width: 650px) {
   .user {
-    display: none;
+    display: flex;
+    align-items: baseline;
+  }
+  .user:before {
+    content: "Sort by:";
+    text-transform: initial;
+  }
+
+  .id,
+  .name,
+  .email {
+    margin: 0;
+    padding: 5px 0;
+    flex: none;
   }
 }

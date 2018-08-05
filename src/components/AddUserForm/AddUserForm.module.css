@@ -2,7 +2,7 @@
   width: 75%;
   display: flex;
   justify-content: space-around;
-  padding: 20px;
+  padding: 20px 25px;
 }
 
 .input,
@@ -29,10 +29,10 @@
   padding: 10px 50px;
   color: #FFF;
   background: var(--accentColor);
-  cursor: pointer;
   border-radius: 3px;
   border: none;
   font-size: 16px;
+  cursor: pointer;
   transition: all .2s;
 }
 
@@ -45,9 +45,9 @@
   display: flex;
   align-self: center;
   padding: 20px;
-  cursor: pointer;
   color: red;
   text-decoration: underline;
+  cursor: pointer;
   transition: all .2s;
 }
 
@@ -68,5 +68,17 @@ input::-webkit-credentials-auto-fill-button {
 @media (max-width: 650px) {
   .form {
     flex-direction: column;
+  }
+
+  .input {
+    margin: 5px 0;
+  }
+
+  .button {
+    margin-top: 5px;
+  }
+
+  .resetFields {
+    padding: 0 20px 20px 25px;
   }
 }
