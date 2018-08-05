@@ -89,10 +89,10 @@ class AddUserForm extends Component {
         </form>
         {
           inputHasError &&
-          <MessageToUser
-            text={"Please fill in all the fields and make sure they are correct. Note! Name can contain only letters and no more than 20 signs."}
-            icon="fas fa-exclamation-circle fa-lg error"
-          />
+            <MessageToUser
+              text={"Please fill in all the fields and make sure they are correct. Note! Name can contain only letters and no more than 20 signs."}
+              icon="fas fa-exclamation-circle fa-lg error"
+            />
         }
       </Fragment>
 

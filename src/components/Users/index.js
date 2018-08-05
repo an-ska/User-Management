@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import styles from "./Users.module.css";
 import User from "../User";
 import AddUserForm from "../AddUserForm";
@@ -21,6 +21,7 @@ class Users extends Component {
       isSuccessMessageShown: false,
     }
   }
+
   componentDidMount() {
     this.getUsers(apiUrl);
   }
@@ -145,37 +146,34 @@ class Users extends Component {
       <div className={styles.contentBox}>
         <header className={styles.formHeader}>
           {
-            !isFormShown && users.length < maximalUsersNumber
-            &&
-              <Button
-                handleClick={() => this.showForm()}
-                text="Add user"
-                icon={"fas fa-plus-circle fa-lg"}
-              />
+            !isFormShown
+              ?
+                <Button
+                  handleClick={() => this.showForm()}
+                  text="Add user"
+                  icon={"fas fa-plus-circle fa-lg"}
+                  disable={users.length < maximalUsersNumber ? false : true}
+                />
+              :
+                <AddUserForm
+                  addUser={this.addUser}
+                  inputNameId="inputName"
+                  inputEmailId="inputEmail"
+                />
           }
           {
-            isSuccessMessageShown
-            &&
+            isSuccessMessageShown &&
               <MessageToUser
                 text="You have successfully added a new user."
                 icon={"fas fa-check-circle fa-lg success"}
-               />
+              />
           }
           {
-            isFormShown
-            ?
-              <AddUserForm
-                addUser={this.addUser}
-                inputNameId="inputName"
-                inputEmailId="inputEmail"
+            !isFormShown && users.length >= maximalUsersNumber &&
+              <MessageToUser
+                text="You can't add new user because of a limit."
+                icon={"fas fa-info-circle fa-lg error"}
               />
-            :
-              users.length >= maximalUsersNumber
-              &&
-                <MessageToUser
-                  text="You can't add new user because of a limit."
-                  icon={"fas fa-info-circle fa-lg error"}
-                />
           }
         </header>
         <ul className={styles.users}>
@@ -191,12 +189,11 @@ class Users extends Component {
               onClick={() => this.sortBy("email")}>e-mail</strong>
           </li>
           {
-            users.length === 0
-            &&
-            <MessageToUser
-              text="No users to show."
-              icon={"fas fa-info-circle fa-lg information"}
-            />
+            users.length === 0 &&
+              <MessageToUser
+                text="No users to show."
+                icon={"fas fa-info-circle fa-lg information"}
+              />
           }
           {
             users.map((user) => (
