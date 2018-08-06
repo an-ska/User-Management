@@ -1,15 +1,18 @@
 import React from "react";
 import styles from "./User.module.css";
 
-const User = ({userId, userName, userEmail, handleClick}) => (
+const User = ({ userId, userName, userEmail, handleClick, disableRemoveUserButton }) => (
   <li className={styles.user}>
     <span className={styles.id}><span className={styles.circle}>{userId}</span></span>
     <span className={styles.name}>{userName}</span>
     <span className={styles.email}>{userEmail}</span>
-    <i
-      className={`${"fas fa-times"} ${styles.removeIcon}`}
+    <button
+      className={styles.removeUserButton}
       onClick={handleClick}
-    ></i>
+      disabled={disableRemoveUserButton}
+      >
+        <i className={`${"fas fa-times"}`}></i>
+    </button>
   </li>
 )
 

@@ -1,11 +1,11 @@
 import React from "react";
 import styles from "./Button.module.css";
 
-const Button = ({ text, icon, handleClick, disable }) => (
+const Button = ({ text, icon, handleClick, disableAddUserButton }) => (
   <button
     className={styles.button}
     onClick={handleClick}
-    disabled={disable}
+    disabled={disableAddUserButton}
   >
     <i className={`${icon} ${styles.icon}`}></i>
     {text}

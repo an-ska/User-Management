@@ -41,6 +41,10 @@
   padding: 200px 10px;
 }
 
+.removeUserLoader {
+  padding: 20px;
+}
+
 @media (max-width: 650px) {
   .user {
     display: flex;

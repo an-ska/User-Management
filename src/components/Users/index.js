@@ -22,7 +22,8 @@ class Users extends Component {
       isLoadingNewUser: false,
       isAscendingSort: true,
       isFormShown: false,
-      isSuccessMessageShown: false
+      isSuccessMessageShown: false,
+      disableRemoveUserButton: false
     }
   }
 
@@ -127,7 +128,11 @@ class Users extends Component {
   }
 
   removeUser = (userId) => {
-    const updatedUsers = this.state.users.filter(user => user.id !== userId)
+    const updatedUsers = this.state.users.filter(user => user.id !== userId);
+
+    this.setState({
+      disableRemoveUserButton: true
+    })
 
     fetch(apiUrl + "/" + userId, {
       method: "DELETE"
@@ -142,12 +147,17 @@ class Users extends Component {
     .then((response) => {
       this.setState({
         users: updatedUsers,
-        isSuccessMessageShown: false
+        isSuccessMessageShown: false,
       })
     })
     .catch((e) => {
       this.setState({
-        hasError: true
+        hasError: true,
+      })
+    })
+    .finally(() => {
+      this.setState({
+        disableRemoveUserButton: false
       })
     })
   }
@@ -173,7 +183,7 @@ class Users extends Component {
   }
 
   render() {
-    const { users, isLoadingInitialUsers, isLoadingNewUser, hasError, isFormShown, doesEmailAlreadyExist, alreadyExistingEmail, isSuccessMessageShown } = this.state;
+    const { users, isLoadingInitialUsers, isLoadingNewUser, hasError, isFormShown, doesEmailAlreadyExist, alreadyExistingEmail, isSuccessMessageShown, disableRemoveUserButton } = this.state;
 
     return (
       <Fragment>
@@ -198,7 +208,7 @@ class Users extends Component {
                         handleClick={() => this.showForm()}
                         text="Add user"
                         icon={"fas fa-plus-circle fa-lg"}
-                        disable={users.length < maximalUsersNumber ? false : true}
+                        disableAddUserButton={users.length < maximalUsersNumber ? false : true}
                       />
                     :
                       <AddUserForm
@@ -251,6 +261,10 @@ class Users extends Component {
                     />
                 }
                 {
+                  disableRemoveUserButton &&
+                  <img alt="" src={loader} className={`${styles.loader} ${styles.removeUserLoader}`}/>
+                }
+                {
                   users.map((user) => (
                     <User
                       key={user.id}
@@ -258,6 +272,7 @@ class Users extends Component {
                       userName={user.name}
                       userEmail={user.email}
                       handleClick={() => this.removeUser(user.id)}
+                      disableRemoveUserButton={disableRemoveUserButton}
                    />
                   ))
                 }

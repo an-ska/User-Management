@@ -34,13 +34,16 @@
   margin: 0 20px 0 10px;
 }
 
-.removeIcon {
+.removeUserButton {
+  border: none;
+  background: none;
   color: #AAA;
-  transition: color .2s;
+  font-size: 16px;
   cursor: pointer;
+  transition: color .2s;
 }
 
-.removeIcon:hover {
+.removeUserButton:hover {
   color: #000;
 }
 
@@ -49,10 +52,10 @@
     flex-direction: column;
   }
 
-  .removeIcon {
+  .removeUserButton {
     display: flex;
     align-self: flex-end;
-    order: 1
+    order: 1;
   }
 
   .id {
