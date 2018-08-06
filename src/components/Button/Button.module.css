@@ -1,6 +1,6 @@
 .button {
   padding: 10px 50px;
-  margin: 25px;
+  margin: 25px 15px 25px 25px;
   color: #FFF;
   background: var(--accentColor);
   border: none;
