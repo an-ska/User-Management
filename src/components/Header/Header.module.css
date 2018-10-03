@@ -1,8 +1,8 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  padding-bottom: 50px;
+  align-items: center;
+  padding-bottom: 20px;
 }
 
 .logo {

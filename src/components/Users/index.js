@@ -138,10 +138,10 @@ class Users extends Component {
       method: "DELETE"
     })
     /* For non-faked API call, response status code should be checked to update
-     the user list only if the API call succeeded. In this task when adding
+     the user list only if the API call succeeded. Here, when adding
      new users they are not actually added in the backend, therefore this call
      would return for them 404 status code. That is why the following check is
-     commented out but should be present in the production.
+     commented out.
     */
     //.then(response => this.handleErrors(response))
     .then((response) => {
@@ -197,7 +197,7 @@ class Users extends Component {
         {
           isLoadingInitialUsers
           ?
-            <img alt="" src={loader} className={styles.loader}/>
+            <img alt="" src={loader} className={styles.loader} />
           :
             <div className={styles.contentBox}>
               <header className={styles.formHeader}>
@@ -207,7 +207,7 @@ class Users extends Component {
                       <Button
                         handleClick={() => this.showForm()}
                         text="Add user"
-                        icon={"fas fa-plus-circle fa-lg"}
+                        icon={"fas fa-user-plus"}
                         disableAddUserButton={users.length < maximalUsersNumber ? false : true}
                       />
                     :
@@ -245,13 +245,19 @@ class Users extends Component {
                 <li className={styles.user}>
                   <strong
                     className={styles.id}
-                    onClick={() => this.sortBy("id")}>lp</strong>
+                    onClick={() => this.sortBy("id")}>
+                    lp <i className={`${"fas fa-sort"} ${styles.sort}`}></i>
+                  </strong>
                   <strong
                     className={styles.name}
-                    onClick={() => this.sortBy("name")}>user</strong>
+                    onClick={() => this.sortBy("name")}>
+                    user <i className={`${"fas fa-sort"} ${styles.sort}`}></i>
+                  </strong>
                   <strong
                     className={styles.email}
-                    onClick={() => this.sortBy("email")}>e-mail</strong>
+                    onClick={() => this.sortBy("email")}>
+                    e-mail <i className={`${"fas fa-sort"} ${styles.sort}`}></i>
+                  </strong>
                 </li>
                 {
                   users.length === 0 &&

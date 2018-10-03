@@ -9,9 +9,9 @@ const Header = () => (
       alt="Logo of the company"
       className={styles.logo}/>
     <a
-      href="https://unamo.com/"
+      href=""
       className={styles.link}
-    >www.unamo.com</a>
+    >www.company.com</a>
   </header>
 )
 

@@ -11,7 +11,7 @@ const User = ({ userId, userName, userEmail, handleClick, disableRemoveUserButto
       onClick={handleClick}
       disabled={disableRemoveUserButton}
       >
-        <i className={`${"fas fa-times"}`}></i>
+        <i className={`${"fas fa-user-minus"}`}></i>
     </button>
   </li>
 )

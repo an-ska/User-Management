@@ -7,7 +7,7 @@
 }
 
 .user:nth-of-type(even) {
-  background: #F9F9F9;
+  background: #f8f7fb;
 }
 
 .id {
@@ -21,7 +21,7 @@
   justify-content: center;
   align-items: center;
   border-radius: 34px;
-  border: 1px solid #EDEDED;
+  border: 1px solid var(--accentColor);
   background: #FFF;
   width: 40px;
   height: 40px;

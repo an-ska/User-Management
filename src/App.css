@@ -1,6 +1,8 @@
 :root {
-  --accentColor: #5EB687;
-  --accentColorHover: #41a36e;
+  --accentColor:  #6751a0;
+  --accentColorHover: #58448c;
+  --errorColor: #FF0000;
+  --successColor: #71c635;
 }
 
 * {
@@ -20,9 +22,9 @@ body {
 }
 
 .error {
-  color: #FF0000;
+  color: var(--errorColor);
 }
 
 .success {
-  color: var(--accentColor);
+  color: var(--successColor);
 }
